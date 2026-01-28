@@ -43,7 +43,7 @@ const eventSchema = new mongoose.Schema({
         type: Object
     },
     // creator: {
-
+        // esto se implementará cuando se cree el auth module
     // }
 
 },
