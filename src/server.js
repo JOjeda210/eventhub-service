@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import {connectDB} from './config/db.js';
+import Event from './models/event.js';
 
 // Cargar variables 
 dotenv.config();
@@ -25,6 +26,20 @@ app.get('/health', (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
+
+// Test insert
+app.post('/event', async (req,res) => {
+    try {
+    const newEvent = await Event.create(req.body); 
+    res.status(201).json(newEvent);
+    } 
+    catch (error) {
+    res.status(400).json({ 
+        error: error.message 
+    });
+    }
+});
+
 
 // Server running
 app.listen(PORT, () => {
