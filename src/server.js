@@ -2,20 +2,20 @@ import express from 'express';
 import dotenv from 'dotenv';
 import {connectDB} from './config/db.js';
 import Event from './models/event.js';
+import { config } from './config/config.js';
 
 // Cargar variables 
 dotenv.config();
 connectDB(); 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json());
 
 
 app.get('/', (req, res) => {
-    res.send(`Server running on port ${PORT}`);
+    res.send(`Server running on port ${config.app.port}`);
 });
 
 // Health 
@@ -42,7 +42,7 @@ app.post('/event', async (req,res) => {
 
 
 // Server running
-app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+app.listen(config.app.port, () => {
+    console.log(`Server running on http://localhost:${config.app.port}`);
 });
 
