@@ -10,5 +10,21 @@ export const config = {
     mongoDB : {
         uri : process.env.MONGO_URI,
         password: process.env.DB_PASSWORD
+    },
+    services: {
+        googleMaps: {
+            key: process.env.GOOGLE_MAPS_API_KEY,
+        },
+        openweather: {
+            key: process.env.OPENWEATHER_API_KEY
+        },
+        spotify: {
+            key: process.env.SPOTIFY_API_KEY
+        },
+        stripe:{
+            secretKey: process.env.STRIPE_SECRET_KEY,
+            publicKey: process.env.STRIPE_PUBLIC_KEY
+        }
+        
     }
 };

@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import {connectDB} from './config/db.js';
 import Event from './models/event.js';
 import { config } from './config/config.js';
-
+import { errorHandler } from './middlewares/error.handler.js';
 // Cargar variables 
 dotenv.config();
 connectDB(); 
@@ -27,6 +27,8 @@ app.get('/health', (req, res) => {
     });
 });
 
+
+
 // Test insert
 app.post('/event', async (req,res) => {
     try {
@@ -40,6 +42,7 @@ app.post('/event', async (req,res) => {
     }
 });
 
+app.use(errorHandler)
 
 // Server running
 app.listen(config.app.port, () => {
