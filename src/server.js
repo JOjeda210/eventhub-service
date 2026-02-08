@@ -1,12 +1,13 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import {connectDB} from './config/db.js';
+import { connectDB } from './config/db.js';
 import Event from './models/event.js';
 import { config } from './config/config.js';
 import { errorHandler } from './middlewares/error.handler.js';
+import { geolocationService } from './services/geolocation.service.js';
 // Cargar variables 
-dotenv.config();
-connectDB(); 
+// dotenv.config();
+connectDB();
 
 const app = express();
 
@@ -20,27 +21,34 @@ app.get('/', (req, res) => {
 
 // Health 
 app.get('/health', (req, res) => {
-    res.status(200).json({ 
-        status: 'OK', 
+    res.status(200).json({
+        status: 'OK',
         message: 'Server is running',
         timestamp: new Date().toISOString()
     });
 });
 
-
-
 // Test insert
-app.post('/event', async (req,res) => {
+app.post('/event', async (req, res) => {
     try {
-    const newEvent = await Event.create(req.body); 
-    res.status(201).json(newEvent);
-    } 
+        const newEvent = await Event.create(req.body);
+        res.status(201).json(newEvent);
+    }
     catch (error) {
-    res.status(400).json({ 
-        error: error.message 
-    });
+        res.status(400).json({
+            error: error.message
+        });
     }
 });
+
+// app.post('/map', async (req, res) => {
+//     const { address } = req.body;
+//     const response = await geolocationService.getCoordinates(address);
+
+//     return res.status(200).json(response); 
+// })
+
+
 
 app.use(errorHandler)
 

@@ -14,6 +14,7 @@ export const config = {
     services: {
         googleMaps: {
             key: process.env.GOOGLE_MAPS_API_KEY,
+            basePath : "https://maps.googleapis.com/maps/api/geocode/json"
         },
         openweather: {
             key: process.env.OPENWEATHER_API_KEY
