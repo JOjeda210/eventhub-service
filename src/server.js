@@ -41,12 +41,21 @@ app.post('/event', async (req, res) => {
     }
 });
 
-// app.post('/map', async (req, res) => {
-//     const { address } = req.body;
-//     const response = await geolocationService.getCoordinates(address);
+// Address -> coordenates
+app.post('/coordinates', async (req, res) => {
+    const { address } = req.body;
+    const response = await geolocationService.getCoordinates(address);
 
-//     return res.status(200).json(response); 
-// })
+    return res.status(200).json(response);
+})
+
+// Coordnates -> Adresss
+app.post('/address', async (req, res) => {
+    const { lat, lng } = req.body;
+    const response = await geolocationService.getAddress(lat, lng)
+
+    return res.status(200).json(response);
+})
 
 
 

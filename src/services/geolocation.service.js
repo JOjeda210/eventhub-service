@@ -27,6 +27,25 @@ export const geolocationService = {
             console.error("Geolocation Error:", error.message);
             throw error;
         }
+    },
+    getAddress : async(lat,lng) =>{
+        if(!lat || !lng){
+            throw new Error('Cordinate or Coordinates are empty');
+        }
+
+        try{
+            const addressReq = await axios.get(`${config.services.googleMaps.basePath}?latlng=${lat},${lng}&key=${config.services.googleMaps.key}`);
+            if (addressReq.data.status === 'ZERO_RESULTS') {
+                throw new Error(`Coordinates not found : ${lat},${lng}`);
+            };
+
+            const address = addressReq.data.results[0].formatted_address; 
+            return address;
+        }catch(error){
+            console.error("Geolocation Error:", error.message);
+            throw error;
+        }
+
 
     }
 }
