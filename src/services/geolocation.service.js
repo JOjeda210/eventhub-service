@@ -3,6 +3,7 @@ import { config } from "../config/config.js"
 
 
 export const geolocationService = {
+    // This method returns the complete location includes lat, lng and address
     getCoordinates: async (address) => {
         if (!address) {
             throw new Error('Address is empty');

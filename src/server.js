@@ -5,6 +5,7 @@ import Event from './models/event.js';
 import { config } from './config/config.js';
 import { errorHandler } from './middlewares/error.handler.js';
 import { geolocationService } from './services/geolocation.service.js';
+import { weatherService } from './services/weather.service.js';
 // Cargar variables 
 // dotenv.config();
 connectDB();
@@ -41,6 +42,8 @@ app.post('/event', async (req, res) => {
     }
 });
 
+/// TESTS
+
 // Address -> coordenates
 app.post('/coordinates', async (req, res) => {
     const { address } = req.body;
@@ -56,6 +59,18 @@ app.post('/address', async (req, res) => {
 
     return res.status(200).json(response);
 })
+
+app.get('/test-weather', async (req, res) => {
+    try {
+        const lat = 21.16;
+        const lon = -86.85; 
+        
+        const result = await weatherService.getWeather(lat, lon);
+        res.json(result);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 
 

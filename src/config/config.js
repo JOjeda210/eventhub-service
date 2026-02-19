@@ -17,7 +17,8 @@ export const config = {
             basePath : "https://maps.googleapis.com/maps/api/geocode/json"
         },
         openweather: {
-            key: process.env.OPENWEATHER_API_KEY
+            key: process.env.OPENWEATHER_API_KEY,
+            basePath: "https://api.openweathermap.org/data/2.5/weather"
         },
         spotify: {
             key: process.env.SPOTIFY_API_KEY
