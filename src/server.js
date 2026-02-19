@@ -6,6 +6,7 @@ import { config } from './config/config.js';
 import { errorHandler } from './middlewares/error.handler.js';
 import { geolocationService } from './services/geolocation.service.js';
 import { weatherService } from './services/weather.service.js';
+import { spotifyService } from './services/spotify.service.js';
 // Cargar variables 
 // dotenv.config();
 connectDB();
@@ -72,7 +73,19 @@ app.get('/test-weather', async (req, res) => {
     }
 });
 
-
+// RUTA DE PRUEBA SPOTIFY (Borrar luego)
+app.get('/test-spotify', async (req, res) => {
+    try {
+        const busqueda = "Bohemian Rhapsody"; // Pon la canción que quieras
+        const resultados = await spotifyService.searchTracks(busqueda);
+        res.json(resultados);
+    } catch (error) {
+        res.status(500).json({ 
+            mensaje: "Error al buscar en Spotify", 
+            error: error.message 
+        });
+    }
+});
 
 app.use(errorHandler)
 

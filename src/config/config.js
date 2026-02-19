@@ -21,7 +21,10 @@ export const config = {
             basePath: "https://api.openweathermap.org/data/2.5/weather"
         },
         spotify: {
-            key: process.env.SPOTIFY_API_KEY
+            key: process.env.SPOTIFY_CLIENT_SECRET,
+            userId: process.env.SPOTIFY_CLIENT_ID,
+            basePath: "https://accounts.spotify.com/api/token",
+            searchPath : "https://api.spotify.com/v1/search"
         },
         stripe:{
             secretKey: process.env.STRIPE_SECRET_KEY,
