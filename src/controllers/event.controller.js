@@ -24,7 +24,31 @@ export const eventController = {
             const event = await eventService.findEvent(id)
             return successRes(req, res, { "data": event }, 200);
         } catch (error) {
-            if(error.message === 'Event not found'){
+            if (error.message === 'Event not found') {
+                return errorRes(req, res, { "error": error.message }, 404);
+            }
+            return errorRes(req, res, { "error": error.message }, 500);
+        }
+    },
+    getEventWeather: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const weather = await eventService.getUpdatedWeather(id);
+            return successRes(req, res, { "data": weather }, 200);
+        } catch (error) {
+            if (error.message === 'Event not found') {
+                return errorRes(req, res, { "error": error.message }, 404);
+            }
+            return errorRes(req, res, { "error": error.message }, 500);
+        }
+    },
+    getEventPlaylist: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const tracks = await eventService.getEventPlaylist(id)
+            return successRes(req, res, { "data": tracks }, 200);
+        } catch (error) {
+            if (error.message === 'Event not found') {
                 return errorRes(req, res, { "error": error.message }, 404);
             }
             return errorRes(req, res, { "error": error.message }, 500);
