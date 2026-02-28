@@ -20,6 +20,18 @@ export const eventService = {
         }
         const savedEvent = await Event.create(eventData)
         return savedEvent;
-    }
+    },
+    fetchEvents : async () => {
+        const events = await Event.find().limit(10);
+        return events; 
+    },
+    findEvent : async (id) => {
+        const event = await Event.findById(id)
+        if(!event) {
+            throw new Error('Event not found');
+        }
+        return event; 
+    },
+    
 
 }

@@ -5,6 +5,7 @@ import { weatherService } from './services/weather.service.js';
 import { spotifyService } from './services/spotify.service.js';
 import { stripeService } from './services/stripe.service.js';
 import { config } from './config/config.js';
+import { eventService } from './services/event.service.js';
 import Event from './models/event.js';
 import routes from './routes/index.routes.js'
 
@@ -117,6 +118,14 @@ app.get('/test-stripe', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+app.get('/test-gets', async (req,res) =>{
+    // const events = await eventService.fetchEvents()
+    const event = await eventService.findEvent('69797bbe40cf749176ca2a65')
+    res.status(200).json({
+        data : event
+    })
+})
 
 app.use(errorHandler)
 
