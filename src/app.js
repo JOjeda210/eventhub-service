@@ -8,28 +8,13 @@ import { config } from './config/config.js';
 import { eventService } from './services/event.service.js';
 import Event from './models/event.js';
 import routes from './routes/index.routes.js'
-
+import webHookRouter from "./routes/webhook.routes.js"
 import Stripe from 'stripe';
 
 const app = express();
-// TODO: Distribuir endpoint en arquitectura
-app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
-    const sig = req.headers['stripe-signature'];
-    let event;
 
-    try {
-        event = await stripeService.verifyWeebhookEvent(req.body, sig)
-    } catch (err) {
-        return res.status(400).send(`Webhook Error: ${err.message}`);
-    }
-
-    if (event.type === 'checkout.session.completed') {
-        const paymentIntent = event.data.object;
-    }
-
-    res.json({ received: true });
-});
-
+// Stripe webhook
+app.use('/api/webhook', webHookRouter)
 // Middleware
 app.use(express.json());
 
