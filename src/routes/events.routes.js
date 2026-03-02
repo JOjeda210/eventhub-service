@@ -7,5 +7,6 @@ router.get('/', eventController.getEvents)
 router.get('/:id', eventController.getEventById)
 router.get('/:id/weather', eventController.getEventWeather)
 router.get('/:id/playlist', eventController.getEventPlaylist)
+router.post('/:id/share', eventController.shareEvent)
 
 export default router;

@@ -1,5 +1,6 @@
 import { eventService } from "../services/event.service.js"
 import { successRes, errorRes } from "../utils/response.helper.js"
+import { socialService } from "../services/social.service.js";
 
 export const eventController = {
     createEvent: async (req, res) => {
@@ -52,6 +53,23 @@ export const eventController = {
                 return errorRes(req, res, { "error": error.message }, 404);
             }
             return errorRes(req, res, { "error": error.message }, 500);
+        }
+    },
+    shareEvent: async (req, res) => {
+        try {
+            const id = req.params.id;
+            const event = await eventService.findEvent(id);
+            const {platform} = req.body;
+            // TODO: Replace hardcoded URL with dynamic URL from request/env
+            const eventUrl = `http://localhost:5173/events/${id}`; 
+
+            const shareLink = socialService.generateShareUrl(platform, {title : event.title , eventUrl})
+            return successRes(req,res,{data : shareLink}, 200)
+        } catch (error) {
+            if (error.message === 'Event not found') {
+                return errorRes(req, res, { "error": error.message }, 404);
+            }
+            return errorRes(req, res, { "error": error.message }, 400);
         }
     }
 }
