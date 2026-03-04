@@ -1,54 +1,64 @@
 import mongoose from "mongoose";
 
 const eventSchema = new mongoose.Schema({
-    title : {
+    title: {
         type: String,
         required: true,
         trim: true
-    }, 
+    },
     description: {
         type: String,
         required: true
     },
-    date : {
+    date: {
         type: Date,
         required: true
     },
-    location : {
+    location: {
         address: {
             type: String,
         },
-        lat : {
-            type:Number
+        lat: {
+            type: Number
         },
-        lng :{
-            type:Number
+        lng: {
+            type: Number
         }
     },
-    price : {
-        type:Number,
-        default : 0
+    price: {
+        type: Number,
+        default: 0
     },
-    isPaid :{
+    isPaid: {
         type: Boolean,
-        default : false
+        default: false
     },
-    eventType:{
+    eventType: {
         type: String
     },
-    weather:{
+    weather: {
         type: Object
     },
-    spotify:{
+    spotify: {
         type: Object
     },
-    // creator: {
-        // esto se implementará cuando se cree el auth module
-    // }
+    creator: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    status: {
+        type: String,
+        enum: ['active', 'cancelled', 'finished'],
+        default: 'active'
+    },
+    isDeleted : {
+        type : Boolean, 
+        default : false
+    }
 
 },
-    {timestamps: true}
+    { timestamps: true }
 );
 
-const Event = mongoose.model('Event',eventSchema);
+const Event = mongoose.model('Event', eventSchema);
 export default Event;
