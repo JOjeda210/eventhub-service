@@ -39,7 +39,7 @@ export const authService = {
             throw new Error("The passwords do not match");
         }
 
-        const payload = { id: user._id };
+        const payload = { id: user._id, role: user.role };
         const token = jwt.sign(payload, config.app.jwtSecret,{expiresIn: '1h'});
 
         const userFormated= user.toObject()
@@ -48,7 +48,7 @@ export const authService = {
 
         const userLogin = {
             data : userFormated, 
-            token : token
+            token : token,
         };
 
         return userLogin;

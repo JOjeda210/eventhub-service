@@ -1,8 +1,10 @@
 import { Router } from "express";
 import { eventController } from "../controllers/event.controller.js";
-const router = Router(); 
+import { authMiddleware } from "../middlewares/auth.middleware.js";
+import { checkRole } from "../middlewares/role.middleware.js"
+const router = Router();
 
-router.post('/', eventController.createEvent)
+router.post('/', authMiddleware,checkRole(['admin']), eventController.createEvent)
 router.get('/', eventController.getEvents)
 router.get('/:id', eventController.getEventById)
 router.get('/:id/weather', eventController.getEventWeather)
