@@ -9,7 +9,7 @@ export const spotifyService = {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     'Authorization': 'Basic ' + Buffer.from(`${config.services.spotify.userId}:${config.services.spotify.key}`).toString('base64')
                 }
-            })
+            });
 
             return response.data.access_token;
 
@@ -22,13 +22,14 @@ export const spotifyService = {
     searchTracks: async (query) => {
         if (!query) {
             throw new Error('The query is required');
-        }
+        };
+
         try {
             const token = await spotifyService.getAccessTokenBySpotify();
             const response = await axios.get(config.services.spotify.searchPath, {
                 headers: { Authorization: `Bearer ${token}` },
                 params: { q: query, type: 'track', limit: 5 }
-            })
+            });
 
             const cleanTracks = response.data.tracks.items.map(t => ({
                 title: t.name,

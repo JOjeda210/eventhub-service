@@ -2,6 +2,7 @@ import { eventService } from "../services/event.service.js"
 import { successRes, errorRes } from "../utils/response.helper.js"
 import { socialService } from "../services/social.service.js";
 
+
 export const eventController = {
     createEvent: async (req, res) => {
         try {
@@ -59,15 +60,40 @@ export const eventController = {
         try {
             const id = req.params.id;
             const event = await eventService.findEvent(id);
-            const {platform} = req.body;
+            const { platform } = req.body;
             // TODO: Replace hardcoded URL with dynamic URL from request/env
-            const eventUrl = `http://localhost:5173/events/${id}`; 
+            const eventUrl = `http://localhost:5173/events/${id}`;
 
-            const shareLink = socialService.generateShareUrl(platform, {title : event.title , eventUrl})
-            return successRes(req,res,{data : shareLink}, 200)
+            const shareLink = socialService.generateShareUrl(platform, { title: event.title, eventUrl })
+            return successRes(req, res, { data: shareLink }, 200)
         } catch (error) {
             if (error.message === 'Event not found') {
                 return errorRes(req, res, { "error": error.message }, 404);
+            }
+            return errorRes(req, res, { "error": error.message }, 400);
+        }
+    },
+    updateEvent: async (req, res) => {
+        const id = req.params.id
+        const updateData = req.body
+        try {
+            const updateEvent = await eventService.updateEvent(id, updateData);
+            return successRes(req, res, { data: updateEvent }, 200)
+        } catch (error) {
+            if (error.message === "Event not found") {
+                return errorRes(req, res, { error: error.message }, 404)
+            }
+            return errorRes(req, res, { "error": error.message }, 400);
+        }
+    },
+    deleteEvent: async (req, res) => {
+        const id = req.params.id
+        try {
+            const eventDeleted = await eventService.deleteEvent(id);
+            return successRes(req, res, { data: eventDeleted }, 200)
+        } catch (error) {
+            if (error.message === "Event not found") {
+                return errorRes(req, res, { error: error.message }, 404)
             }
             return errorRes(req, res, { "error": error.message }, 400);
         }

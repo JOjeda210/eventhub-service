@@ -23,7 +23,8 @@ export const stripeService = {
                         quantity: 1
                     }
                 ]
-            })
+            });
+
             return session.url;
         } catch (error) {
             console.error(" Stripe Session Error:", error.message);
@@ -36,7 +37,8 @@ export const stripeService = {
                 rawBody,
                 signature,
                 config.services.stripe.webhookSecret
-            )
+            );
+            
             return event;
         } catch (error) {
             console.error(" Stripe Webhook verify Error:", error.message);

@@ -4,7 +4,7 @@ import { stripeController } from "../controllers/stripe.controller.js";
 
 const router = Router(); 
 
-router.post('/',express.raw({ type: 'application/json' }), stripeController.stripeWebhook)
+router.post('/',express.raw({ type: 'application/json' }), stripeController.stripeWebhook);
 
 
 export default router; 

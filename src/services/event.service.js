@@ -7,18 +7,20 @@ import { spotifyService } from "./spotify.service.js";
 export const eventService = {
     buildAndSaveEvent: async (eventPayload) => {
         const { location } = eventPayload;
-        const address = await geolocationService.getCoordinates(location)
+        const address = await geolocationService.getCoordinates(location);
         const { lat, lng } = address;
-        const weatherData = await weatherService.getWeather(lat, lng)
+        const weatherData = await weatherService.getWeather(lat, lng);
         const { eventType } = eventPayload;
-        const tracks = await spotifyService.searchTracks(eventType)
+        const tracks = await spotifyService.searchTracks(eventType);
+        
         const eventData = {
             ...eventPayload,
             location: address,
             weather: weatherData,
             spotify: tracks
         }
-        const savedEvent = await Event.create(eventData)
+
+        const savedEvent = await Event.create(eventData);
         return savedEvent;
     },
     fetchEvents: async () => {
@@ -26,10 +28,12 @@ export const eventService = {
         return events;
     },
     findEvent: async (id) => {
-        const event = await Event.findById(id)
+        const event = await Event.findById(id);
+
         if (!event) {
             throw new Error('Event not found');
-        }
+        };
+
         return event;
     },
     getUpdatedWeather: async (id) => {
@@ -41,10 +45,43 @@ export const eventService = {
     },
     getEventPlaylist: async (id) => {
         const event = await eventService.findEvent(id);
-        const eventType  = event.eventType;
+        const eventType = event.eventType;
 
-        const newSounds = await spotifyService.searchTracks(eventType); 
-        return newSounds; 
+        const newSounds = await spotifyService.searchTracks(eventType);
+        return newSounds;
+    },
+    updateEvent: async (id, updateData) => {
+        try {
+            const updateDocEvent = await Event.findByIdAndUpdate(id, updateData, { new: true });
+
+            if (!updateDocEvent) {
+                throw new Error('Event not found');
+            };
+
+            return updateDocEvent;
+        } catch (error) {
+            console.error("Update event Error:", error.message);
+            throw error;
+        }
+    },
+    deleteEvent: async (id) => {
+        const deleteData = {
+            isDeleted: true,
+            status: "cancelled"
+        };
+
+        try {
+            const deleteDocEvent = await Event.findByIdAndUpdate(id, deleteData, { new: true });
+
+            if (!deleteDocEvent) {
+                throw new Error('Event not found');
+            };
+            return deleteDocEvent;
+
+        } catch (error) {
+            console.error("delete event Error:", error.message);
+            throw error;
+        }
     }
 
 

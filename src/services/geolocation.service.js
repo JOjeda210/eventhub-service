@@ -13,14 +13,13 @@ export const geolocationService = {
             const coordinatesReq = await axios.get(`${config.services.googleMaps.basePath}?address=${encodeURIComponent(address)}&key=${config.services.googleMaps.key}`);
             if (coordinatesReq.data.status === 'ZERO_RESULTS') {
                 throw new Error(`Address not found ${address}`);
-            }
+            };
+
             const coordinatesFormatted = {
                 lat: coordinatesReq.data.results[0].geometry.location.lat,
                 lng: coordinatesReq.data.results[0].geometry.location.lng,
                 address: coordinatesReq.data.results[0].formatted_address
-
-
-            }
+            };
 
             return coordinatesFormatted;
         }

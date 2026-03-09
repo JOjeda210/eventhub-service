@@ -15,13 +15,14 @@ export const authService = {
         const user = new User({
             ...userData,
             password: hashedPassword
-        })
-        try {
-            const newUser = await user.save()
-            const userWithoutPassword = newUser.toObject();
-            delete userWithoutPassword.password
+        });
 
-            return userWithoutPassword
+        try {
+            const newUser = await user.save();
+            const userWithoutPassword = newUser.toObject();
+            delete userWithoutPassword.password;
+
+            return userWithoutPassword;
         } catch (error) {
             throw new Error(`User creation error: ${error.message}`);
 
@@ -32,18 +33,19 @@ export const authService = {
 
         if (!user) {
             throw new Error("User not found");
-        }
+        };
 
-        const isPasswordsEquals = await bcrypt.compare(password, user.password)
+        const isPasswordsEquals = await bcrypt.compare(password, user.password);
+
         if (!isPasswordsEquals) {
             throw new Error("The passwords do not match");
-        }
+        };
 
         const payload = { id: user._id, role: user.role };
         const token = jwt.sign(payload, config.app.jwtSecret,{expiresIn: '1h'});
 
-        const userFormated= user.toObject()
-        delete userFormated.password
+        const userFormated= user.toObject();
+        delete userFormated.password;
 
 
         const userLogin = {
